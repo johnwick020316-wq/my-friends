@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мои друзья</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Заголовок -->
+<div class="about">
+  <h1 class="title"><span id="changingText">Мои друзья</span></h1>
+  <p>Небольшая страница с людьми, с которыми я общаюсь</p>
+</div>
+
+<!-- Карточки -->
+<div class="container">
+  <div class="card me">
+    <div class="info"><h2>Владик</h2><p> 14 лет • Гродноэ</p><p>друг</p></div>
+    <div class="more"><p>гномик</p><p>160 см</p><p>бисексуал</p></div>
+  </div>
+
+  <div class="card friend1">
+    <div class="info"><h2>Мамыржан</h2><p>15 лет • Астана</p>Лучший друг</div>
+    <div class="more"><p>Любит бургеры</p><p>Пузотряс</p><p>Гей</p></div>
+  </div>
+
+  <div class="card friend2">
+    <div class="info"><h2>Дима</h2><p>15 лет • Астана</p><p>Друг</p></div>
+    <div class="more"><p>Негр</p><p>Работа,поле,хлопок</p><p>Гей</p></div>
+  </div>
+
+  <div class="card friend3">
+    <div class="info"><h2>Санжар</h2><p>15 лет • Актобе</p><p>Друг</p></div>
+    <div class="more"><p>АнальныйТеррорист</p><p>Чьмо</p><p>ВластелинГейства</p></div>
+  </div>
+
+  <div class="card friend4">
+    <div class="info"><h2>Катя</h2><p>16 лет • Смоленск</p><p>Подруга</p></div>
+    <div class="more"><p>Мужская угодница</p><p>Люблю только свою левую руку</p><p>Зоофилка</p></div>
+  </div>
+
+  <div class="card friend5">
+    <div class="info"><h2>Игнат</h2><p>15 лет • Алматы</p><p>Друг</p></div>
+    <div class="more"><p>40 - Летний</p><p>Девственик</p><p>Пидор</p></div>
+  </div>
+</div>
+
+<!-- Частицы -->
+<canvas id="particles"></canvas>
+
+<script>
+// ====== Печатающий текст ======
+const texts=["Мои друзья","Мои знакомые","С кем я общаюсь"];
+let textIndex=0,charIndex=0,currentText="",isDeleting=false;
+function typeEffect(){
+  const element=document.getElementById("changingText");
+  const fullText=texts[textIndex];
+  if(!isDeleting){
+    currentText=fullText.substring(0,charIndex++);
+    element.innerText=currentText;
+    if(currentText===fullText){isDeleting=true;setTimeout(typeEffect,1500);return;}
+  }else{
+    currentText=fullText.substring(0,charIndex--);
+    element.innerText=currentText;
+    if(currentText===""){isDeleting=false;textIndex++;if(textIndex>=texts.length)textIndex=0;}
+  }
+  setTimeout(typeEffect,80);
+}
+typeEffect();
+
+// ====== Частицы на фоне ======
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+const particleCount=100;
+
+for(let i=0;i<particleCount;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.5+0.5,
+    dx:(Math.random()-0.5)*0.3,
+    dy:(Math.random()-0.5)*0.3
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.dx;
+    p.y+=p.dy;
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
